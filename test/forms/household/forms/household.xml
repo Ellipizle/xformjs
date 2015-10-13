@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+    <h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <h:head>
+            <h:title>Household</h:title>
+            <model>
+                <instance>
+                    <data id="household" version="2014083101">
+                        <firstname></firstname>
+                        <lastname></lastname>
+                        <age></age>
+                        <meta>
+                        <instanceID/>
+                        </meta>
+                    </data>
+                </instance>
+                <bind nodeset="/data/firstname" type="string" required="true()" />
+                <bind nodeset="/data/lastname" type="string" />
+                <bind nodeset="/data/age" type="integer" />
+            </model>
+        </h:head>
+        <h:body>
+            <input ref="/data/firstname">
+            <label>What is your first name?</label>
+            </input>
+            <input ref="/data/lastname">
+            <label>What is your last name?</label>
+            </input>
+            <input ref="/data/age">
+            <label>What is your age?</label>
+            </input>
+        </h:body>
+    </h:html>

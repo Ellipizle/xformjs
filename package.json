@@ -1,0 +1,40 @@
+{
+    "name": "xformjs",
+    "version": "0.1.0",
+    "description": "Utilities to work with XForm definition and instance in nodejs",
+    "main": "index.js",
+    "scripts": {
+        "test": "grunt test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lykmapipo/xformjs"
+    },
+    "keywords": [
+        "xForm",
+        "processor"
+    ],
+    "author": "lykmapipo <lallyelias87@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/lykmapipo/xformjs/issues"
+    },
+    "dependencies": {
+        "async": "^1.4.2",
+        "exceljs": "^0.2.3",
+        "lodash": "^3.10.1",
+        "xlsjs": "^0.7.5",
+        "xml2js": "^0.4.12"
+    },
+    "devDependencies": {
+        "chai": "~1.10.0",
+        "faker": "^3.0.1",
+        "grunt": "~0.4.1",
+        "grunt-contrib-jshint": "^0.11.2",
+        "grunt-contrib-watch": "~0.5.3",
+        "grunt-mocha-test": "^0.12.7",
+        "jshint-stylish": "^2.0.1",
+        "load-grunt-tasks": "^3.2.0",
+        "mocha": "^2.2.5"
+    }
+}
