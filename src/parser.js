@@ -3,9 +3,9 @@
 //dependencies
 var path = require('path');
 var _ = require('lodash');
-var convertor = require(path.join(__dirname, 'convertor'));
 var common = require(path.join(__dirname, 'common'));
 var translation = require(path.join(__dirname, 'xform', 'translation'));
+var binding = require(path.join(__dirname, 'xform', 'binding'));
 
 /**
  * @module parser
@@ -60,159 +60,68 @@ parser.parseInstance = function(xformJson) {
 };
 
 
-
-/**
- * @description parse default value of the question from primary instance nodes
- *              and set it to the binding
- * @param  {Object} binding valid question binding
- * @return {Object}         binding with `defaultsTo` seted
- * @public
- */
-parser.parseDefaultValue = function(xformJson, binding) {
-
-    //compute question answer submission key
-    var reference = _.filter(binding.nodeset.split('/'), function(item) {
-        return !_.isEmpty(item);
-    }).join('.');
-
-    //try to obtain default value
-    //for non readonly inputs i.e label, hint, output and note
-    if (!binding.readonly) {
-        var defaultsTo = _.get(xformJson.html.head.model.instance, reference);
-
-        //set question default value
-        //TODO use option missing value/default value
-        if (defaultsTo && !_.isEmpty(defaultsTo)) {
-            binding.defaultsTo = defaultsTo;
-        }
-    }
-
-    //TODO cast default value to correct type
-    var isNumber =
-        (binding.type === 'integer' ||
-            binding.type === 'decimal');
-
-    if (isNumber && binding.defaultsTo) {
-        binding.defaultsTo = Number(binding.defaultsTo);
-    }
-
-};
-
-
-/**
- * @description process nodeset or ref to obtain its instance variable name
- * @param  {String} nodeset valid nodeset or ref
- * @public
- */
-parser.parseVariableName = function(nodeset) {
-
-    //compute variable name of the given nodeset
-    return _.tail(_.filter(nodeset.split('/'), function(item) {
-        return !_.isEmpty(item);
-    })).join('.');
-
-};
-
-
-/**
- * @description parse provided node as a binding
- * @param  {Object} node valid xForm node
- * @return {Object}      binding of the question
- */
-parser.parseBinding = function(node) {
-    //normalize binding node
-    var binding = common.normalizeNode(node);
-
-    //normalize binding attributes
-
-    //normalize nodeset
-    binding.nodeset = binding.nodeset || binding.ref;
-
-    //normalize type
-    binding.type = binding.type || 'string';
-    binding.type = common.normalizeType(binding.type);
-
-    //normalize readonly
-    binding.readonly = binding.readonly || 'false()';
-
-    //normalize saveIncomplete
-    binding.saveIncomplete = binding.saveIncomplete || 'false()';
-
-    //parse binding required to js types
-    binding.required =
-        binding.required ? binding.required : 'false()';
-
-    //convert boolean strings to actual js boolean
-    binding = convertor.parseBooleans(binding);
-
-    //compute question variable name from it bindings
-    binding.name = parser.parseVariableName(binding.nodeset);
-
-
-    return binding;
-
-};
-
-
-/**
- * @description parser form bindings from xForm
- * @param  {Object} xformJson xml2js json represention of xForm xml
- * @return {Object}           normalized bindings of xForm
- */
-parser.parseBindings = function(xformJson) {
-    var bindings = {};
-
-    var xformJsonBindings =
-        _.get(xformJson, 'html.head.model.bind');
-
-    //TODO parallelize
-    _.forEach(xformJsonBindings, function(binding) {
-
-        //parse and normalize binding
-        binding = parser.parseBinding(binding);
-
-        //parse default value
-        parser.parseDefaultValue(xformJson, binding);
-
-        //collect bindings
-        bindings[binding.nodeset] = binding;
-
-    });
-
-    return bindings;
-};
-
-
-
-
-
 /**
  * @description normalize question label and use angular style databing to allow 
  *              label to reference instance values
+ * @param  {Array<Object>} translations available language translations
  * @param  {Object|String} label question label
  * @return {String}          [description]
  */
-parser.parseLabel = function(label) {
+parser.parseLabel = function(translations, label) {
     //if label has reference to instance value
     if (_.isPlainObject(label)) {
+        //normalize node
+        label = common.normalizeNode(label);
+
         //obtain label text from object label definition
-        var text = label._;
+        if (label._) {
+            label.defaultsTo = {
+                value: label._
+            };
+            label = _.omit(label, '_');
+        }
+
+        if (label.ref && translations) {
+            //convert label jrText to translation id
+            label.id =
+                common.jrTextToTranslationId(label.ref);
+
+            //parse default language label definition
+            label.defaultsTo =
+                translation.parseNodeLanguage(translations, label.id);
+
+            //parse all label languages
+            label.languages =
+                translation.parseNodeLanguages(translations, label.id);
+        }
+
+        //delete ref from label
+        label = _.omit(label, 'ref');
 
         //obtain reference instance path
         var ref =
             label.output && label.output.$ ? label.output.$.ref : undefined;
 
         if (ref) {
-            var path = parser.parseVariableName(ref);
+            var path = common.parseVariableName(ref);
 
             //bind instance path reference using angular style
-            text = text.replace('\n', ' {{' + path + '}}');
+            label.defaultsTo.value =
+                label.defaultsTo.value.replace('\n', ' {{' + path + '}}');
 
             //remove unwanted tabs on the label
-            text = text.replace(/\s+/g, ' ');
+            label.defaultsTo.value =
+                label.defaultsTo.value.replace(/\s+/g, ' ');
         }
+    }
 
-        label = text;
+    //hint its just a string
+    if (_.isString(label)) {
+        var _label = {};
+        _label.defaultsTo = {
+            value: label
+        };
+        label = _label;
     }
 
     return label;
@@ -234,7 +143,9 @@ parser.parserQuestionHint = function(translations, question) {
         hint = common.normalizeNode(hint);
 
         if (hint._) {
-            hint.default = hint._;
+            hint.defaultsTo = {
+                value: hint._
+            };
             hint = _.omit(hint, '_');
         }
 
@@ -244,7 +155,7 @@ parser.parserQuestionHint = function(translations, question) {
                 common.jrTextToTranslationId(hint.ref);
 
             //parse default language hint definition
-            hint.default =
+            hint.defaultsTo =
                 translation.parseNodeLanguage(translations, hint.id);
 
             //parse all hint languages
@@ -259,7 +170,9 @@ parser.parserQuestionHint = function(translations, question) {
     //hint its just a string
     if (_.isString(hint)) {
         var _hint = {};
-        _hint.default = hint;
+        _hint.defaultsTo = {
+            value: hint
+        };
         hint = _hint;
     }
 
@@ -277,7 +190,7 @@ parser.parseQuestions = function(xformJson) {
     var questions = [];
 
     //parse questions bindings
-    var bindings = parser.parseBindings(xformJson);
+    var bindings = binding.parseBindings(xformJson);
 
     //parse translations
     var translations = translation.parseTranslations(xformJson);
@@ -296,7 +209,7 @@ parser.parseQuestions = function(xformJson) {
         question.widget = widget;
 
         //normalize question label
-        question.label = parser.parseLabel(question.label);
+        question.label = parser.parseLabel(translations, question.label);
 
         //normalize hint
         if (question.hint) {

@@ -118,8 +118,8 @@ describe('xform2json', function() {
 
                 expect(hint.id).to.be.equal('/data/name:hint');
 
-                expect(hint.default).to.exists;
-                expect(hint.default.value)
+                expect(hint.defaultsTo).to.exists;
+                expect(hint.defaultsTo.value)
                     .to.be.equal('What is this point named?');
 
                 expect(hint.languages).to.exist;
@@ -226,7 +226,7 @@ describe('xform2json', function() {
                 });
 
                 expect(question).to.exist;
-                expect(question.label).to.contain('{{name}}');
+                expect(question.label.defaultsTo.value).to.contain('{{name}}');
 
                 done(error, xformJson);
             });

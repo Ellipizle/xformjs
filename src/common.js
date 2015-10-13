@@ -65,5 +65,20 @@ common.jrTextToTranslationId = function(jrText) {
 };
 
 
+/**
+ * @description process nodeset or ref to obtain its instance variable name
+ * @param  {String} nodeset valid nodeset or ref
+ * @public
+ */
+common.parseVariableName = function(nodeset) {
+
+    //compute variable name of the given nodeset
+    return _.tail(_.filter(nodeset.split('/'), function(item) {
+        return !_.isEmpty(item);
+    })).join('.');
+
+};
+
+
 //export common module
 module.exports = exports = common;
