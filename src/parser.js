@@ -112,6 +112,9 @@ parser.parseLabel = function(translations, label) {
             //remove unwanted tabs on the label
             label.defaultsTo.value =
                 label.defaultsTo.value.replace(/\s+/g, ' ');
+
+            //delete output from label
+            label = _.omit(label, 'output');
         }
     }
 
