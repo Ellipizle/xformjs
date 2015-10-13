@@ -58,33 +58,4 @@
 
 ## Label
 - [ ] Allow references to be binded on the label using angular style
-- [ ] 
-
-'use strict';
-
-//dependencies
-var fs = require('fs');
-var path = require('path');
-var expect = require('chai').expect;
-var xform2json = require(path.join(__dirname, '..')).xform2json;
-
-describe('xform2json complex', function() {
-
-    describe('title', function() {
-        var form =
-            fs.readFileSync(path.join(__dirname, 'forms', 'farmer', 'forms', 'Farmer.xml'), 'utf-8');
-
-        it('should be able to parse xForm title', function(done) {
-            xform2json(form, function(error, xformJson) {
-
-                expect(xformJson).to.exist;
-                expect(xformJson.title).to.exist;
-                expect(xformJson.title).to.be.equal('Farmer');
-
-                done(error, xformJson);
-            });
-        });
-
-    });
-
-});
+- [ ] parse default language label from text
