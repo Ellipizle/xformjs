@@ -59,3 +59,7 @@
 ## Label
 - [ ] Allow references to be binded on the label using angular style
 - [ ] parse default language label from text
+
+## Repeat
+- [ ] findout how repeat questions are submitted in instance
+- [ ] parse repeated questions
