@@ -28,6 +28,7 @@
 - [ ] Parse question relevant
 - [x] Parse question readonly
 - [x] Parse question type, default to *string* if none present
+- [ ] parse question type, default to string
 
 ## Translation
 - [x] parse default language
@@ -39,10 +40,14 @@
 - [ ] parse media translation
 
 ## Instance
-- [x] Parse primary instance name
+- [x] Parse primary instance name or title
 - [x] Parse and obtain node default values and set them to `default` or `defaultValue` on bindings
 - [ ] Parse common instance id, version and preloads
 - [ ] Parse meta and add formula to evaluate them
+    + [ ] Parse their definition into js object
+    + [ ] Add default nodejs evealuation logics 
+- [ ] Parse instance structure and obtain it in both `xml` and `json`
+- [ ] Parse `metadata` as `json`
 - [ ] Parse geopoint data
 
 ## Body
@@ -54,7 +59,8 @@
 - [ ] Pre-code well known question types
 - [x] Parse form input widget to be used in a given question
 - [ ] Normalize input widgets to be used for html forms
-- [ ] 
+- [ ] parse input hint form the input `<hint>` child node
+- [ ] Parse geopoint data
 
 ## Label
 - [ ] Allow references to be binded on the label using angular style
@@ -66,3 +72,18 @@
 
 
 ## Widgets
+- [ ] parse input widget
+- [ ] parse select1 widget
+- [ ] parse select widget
+- [ ] parse upload widget
+- [ ] parse trigger widget
+
+## Controls
+- [ ] parse group control
+- [ ] parse repeat control
+- [ ] parse label control
+- [ ] parse hint control
+- [ ] parse output control
+- [ ] parse item control
+- [ ] parse itemset control
+- [ ] parse value control
