@@ -29,15 +29,16 @@
 - [x] Parse question readonly
 - [x] Parse question type, default to *string* if none present
 - [ ] parse question type, default to string
+- [ ] parse preload and property as `meta` for the form
 
 ## Translation
 - [x] parse default language
 - [x] normalize default language
-- [ ] parse translation text
-- [ ] parse short and long attributes
+- [x] parse translation text
+- [x] parse short and long attributes
 - [ ] parse node with no attributes
 - [ ] add translation per question
-- [ ] parse media translation
+- [x] parse media translation
 
 ## Instance
 - [x] Parse primary instance name or title
@@ -87,3 +88,8 @@
 - [ ] parse item control
 - [ ] parse itemset control
 - [ ] parse value control
+
+
+## To resolve
+- [ ] use simple structure on languages
+- [ ] use simple structure on label and hint

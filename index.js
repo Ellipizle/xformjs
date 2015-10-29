@@ -5,7 +5,7 @@
 var xml2js = require('xml2js');
 var path = require('path');
 var async = require('async');
-var parser = require(path.join(__dirname, 'src', 'parser'));
+var xform = require(path.join(__dirname, 'src', 'xform'));
 
 /**
  * @module xformjs
@@ -18,13 +18,13 @@ var xformjs = {};
 
 /**
  * @description convert xForm xml definition to JSON definition
- * @param  {String}   xform valid xForm definition
+ * @param  {String}   xForm valid xForm definition
  * @param  {Function} done  function to invoke on success or failure
  * @return {Object}         error object with errors found during conversion or 
  *                          JSON representaion of xForm
  *                                
  */
-xformjs.xform2json = function(xform, done) {
+xformjs.xform2json = function(xForm, done) {
     //prepare xml2js convertor
     var xmljs = new xml2js.Parser({
         tagNameProcessors: [
@@ -45,31 +45,34 @@ xformjs.xform2json = function(xform, done) {
 
 
     //parse form
-    xmljs.parseString(xform, function(error, xformJson) {
+    xmljs.parseString(xForm, function(error, xformJson) {
         //backoff
         if (error) {
             done(error);
         }
 
-        //dump xformjson
-        // fs.writeFileSync('form.json', JSON.stringify(xformJson), 'utf-8');
-
         //continue parsing form
         async.parallel({
             title: function(next) {
-                next(null, parser.parseTitle(xformJson));
+                next(null, xform.parseTitle(xformJson));
+            },
+            id: function(next) {
+                next(null, xform.parseId(xformJson));
+            },
+            version: function(next) {
+                next(null, xform.parseVersion(xformJson));
             },
             instanceName: function(next) {
-                next(null, parser.parsePrimaryInstanceName(xformJson));
+                next(null, xform.parseInstanceName(xformJson));
             },
             instance: function(next) {
-                next(null, parser.parseInstance(xformJson));
+                next(null, xform.parseInstance(xformJson));
             },
             translations: function(next) {
-                next(null, parser.parseTranslations(xformJson));
+                next(null, xform.parseTranslations(xformJson));
             },
             questions: function(next) {
-                next(null, parser.parseQuestions(xformJson));
+                next(null, xform.parseQuestions(xformJson));
             }
         }, done);
 

@@ -20,37 +20,39 @@ var binding = {};
 /**
  * @description parse default value of the question from primary instance nodes
  *              and set it to the binding
- * @param  {Object} binding valid question binding
+ * @param  {Object} bind valid question binding
  * @return {Object}         binding with `defaultsTo` seted
  * @public
  */
-binding.parseDefaultValue = function(xformJson, _binding) {
+binding.parseDefaultValue = function(xformJson, bind) {
 
     //compute question answer submission key
-    var reference = _.filter(_binding.nodeset.split('/'), function(item) {
+    var reference = _.filter(bind.nodeset.split('/'), function(item) {
         return !_.isEmpty(item);
     }).join('.');
 
     //try to obtain default value
     //for non readonly inputs i.e label, hint, output and note
-    if (!_binding.readonly) {
+    if (!bind.readonly) {
         var defaultsTo = _.get(xformJson.html.head.model.instance, reference);
 
         //set question default value
         //TODO use option missing value/default value
         if (defaultsTo && !_.isEmpty(defaultsTo)) {
-            _binding.defaultsTo = defaultsTo;
+            bind.defaultsTo = defaultsTo;
         }
     }
 
     //TODO cast default value to correct type
     var isNumber =
-        (_binding.type === 'integer' ||
-            _binding.type === 'decimal');
+        (bind.type === 'integer' ||
+            bind.type === 'decimal');
 
-    if (isNumber && _binding.defaultsTo) {
-        _binding.defaultsTo = Number(_binding.defaultsTo);
+    if (isNumber && bind.defaultsTo) {
+        bind.defaultsTo = Number(bind.defaultsTo);
     }
+
+    return bind;
 
 };
 
@@ -62,65 +64,70 @@ binding.parseDefaultValue = function(xformJson, _binding) {
  */
 binding.parseBinding = function(node) {
     //normalize binding node
-    var _binding = common.normalizeNode(node);
+    var bind = common.normalizeNode(node);
 
     //normalize binding attributes
 
     //normalize nodeset
-    _binding.nodeset = _binding.nodeset || _binding.ref;
+    bind.nodeset = bind.nodeset || bind.ref;
 
-    //normalize type
-    _binding.type = _binding.type || 'string';
-    _binding.type = common.normalizeType(_binding.type);
+    //normalize type 
+    //default to string if not found
+    bind.type = bind.type || 'string';
+    bind.type = common.normalizeType(bind.type);
 
     //normalize readonly
-    _binding.readonly = _binding.readonly || 'false()';
-
-    //normalize saveIncomplete
-    _binding.saveIncomplete = _binding.saveIncomplete || 'false()';
+    bind.readonly = bind.readonly || 'false()';
 
     //parse binding required to js types
-    _binding.required =
-        _binding.required ? _binding.required : 'false()';
+    bind.required =
+        bind.required ? bind.required : 'false()';
+
+    //TODO below attributes
+    //TODO parse relevant
+    //TODO parse constraints
+    //TODO parse calculate
+
+    //normalize saveIncomplete
+    bind.saveIncomplete = bind.saveIncomplete || 'false()';
 
     //convert boolean strings to actual js boolean
-    _binding = convertor.parseBooleans(_binding);
+    bind = convertor.parseBooleans(bind);
 
     //compute question variable name from it bindings
-    _binding.name = common.parseVariableName(_binding.nodeset);
+    bind.name = common.parseVariableName(bind.nodeset);
 
-
-    return _binding;
+    return bind;
 
 };
 
 
 /**
- * @description parser form bindings from xForm
+ * @description parser xform bindings
  * @param  {Object} xformJson xml2js json represention of xForm xml
  * @return {Object}           normalized bindings of xForm
  */
 binding.parseBindings = function(xformJson) {
-    var _bindings = {};
+    var binds = {};
 
     var xformJsonBindings =
         _.get(xformJson, 'html.head.model.bind');
 
     //TODO parallelize
-    _.forEach(xformJsonBindings, function(_binding) {
+    _.forEach(xformJsonBindings, function(bind) {
 
         //parse and normalize binding
-        _binding = binding.parseBinding(_binding);
+        bind = binding.parseBinding(bind);
 
         //parse default value
-        binding.parseDefaultValue(xformJson, _binding);
+        binding.parseDefaultValue(xformJson, bind);
 
         //collect bindings
-        _bindings[_binding.nodeset] = _binding;
+        binds[bind.nodeset] = bind;
 
     });
 
-    return _bindings;
+    return binds;
 };
 
 

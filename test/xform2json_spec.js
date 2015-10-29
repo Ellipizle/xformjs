@@ -12,10 +12,13 @@ var phoneForm =
     fs.readFileSync(path.join(__dirname, 'forms', 'phone', 'forms', 'Phone.xml'), 'utf-8');
 
 var waterForm =
-    fs.readFileSync(path.join(__dirname, 'forms', 'water_simple', 'forms', 'WaterSimple.xml'), 'utf-8');
+    fs.readFileSync(path.join(__dirname, 'forms', 'water', 'forms', 'WaterSimple.xml'), 'utf-8');
 
 var registrationForm =
     fs.readFileSync(path.join(__dirname, 'forms', 'registration', 'forms', 'registration.xml'), 'utf-8');
+
+var farmerForm =
+    fs.readFileSync(path.join(__dirname, 'forms', 'farmer', 'forms', 'Farmer.xml'), 'utf-8');
 
 describe('xform2json', function() {
 
@@ -24,26 +27,53 @@ describe('xform2json', function() {
         done();
     });
 
-    it('should be able to parse title', function(done) {
-        xform2json(phoneForm, function(error, xformJson) {
+    describe('parse head', function() {
+        it('should be able to parse form title', function(done) {
+            xform2json(phoneForm, function(error, xformJson) {
 
-            expect(xformJson).to.exist;
-            expect(xformJson.title).to.exist;
-            expect(xformJson.title).to.be.equal('Phone');
+                fs.writeFileSync('phone.json', JSON.stringify(xformJson), 'utf-8');
 
-            done(error, xformJson);
+                expect(xformJson).to.exist;
+                expect(xformJson.title).to.exist;
+                expect(xformJson.title).to.be.equal('Phone');
+
+                done(error, xformJson);
+            });
         });
-    });
 
-    it('should be able to parse primary instance name', function(done) {
-        xform2json(phoneForm, function(error, xformJson) {
+        it('should be able to parse form id', function(done) {
+            xform2json(phoneForm, function(error, xformJson) {
 
-            expect(xformJson).to.exist;
-            expect(xformJson.instanceName).to.exist;
-            expect(xformJson.instanceName).to.be.equal('phone');
+                expect(xformJson).to.exist;
+                expect(xformJson.id).to.exist;
+                expect(xformJson.id).to.be.equal('Phone_2011-02-04_00-09-18');
 
-            done(error, xformJson);
+                done(error, xformJson);
+            });
         });
+
+        it('should be able to parse form version', function(done) {
+            xform2json(phoneForm, function(error, xformJson) {
+
+                expect(xformJson).to.exist;
+                expect(xformJson.version).to.exist;
+                expect(xformJson.version).to.be.equal('1.0.0');
+
+                done(error, xformJson);
+            });
+        });
+
+        it('should be able to parse primary instance name', function(done) {
+            xform2json(phoneForm, function(error, xformJson) {
+
+                expect(xformJson).to.exist;
+                expect(xformJson.instanceName).to.exist;
+                expect(xformJson.instanceName).to.be.equal('phone');
+
+                done(error, xformJson);
+            });
+        });
+
     });
 
 
@@ -69,6 +99,8 @@ describe('xform2json', function() {
         it('should be able to parse instance node form complex form', function(done) {
             xform2json(registrationForm, function(error, xformJson) {
 
+                fs.writeFileSync('registration.json', JSON.stringify(xformJson), 'utf-8');
+
                 expect(xformJson.instance).to.exist;
                 expect(_.keys(xformJson.instance))
                     .to.contain(
@@ -91,6 +123,8 @@ describe('xform2json', function() {
         it('should be able to parse translations', function(done) {
             xform2json(waterForm, function(error, xformJson) {
 
+                fs.writeFileSync('water.json', JSON.stringify(xformJson), 'utf-8');
+
                 expect(xformJson.translations).to.exist;
 
                 done(error, xformJson);
@@ -110,8 +144,31 @@ describe('xform2json', function() {
             });
         });
 
+
+        it('should be able to parse question label from translations', function(done) {
+            xform2json(waterForm, function(error, xformJson) {
+
+                var label = _.find(xformJson.questions, {
+                    name: 'name'
+                }).label;
+
+                expect(label.id).to.be.equal('/data/name:label');
+
+                expect(label.defaultsTo).to.exists;
+                expect(label.defaultsTo.value.long)
+                    .to.be.equal('Water Point Name');
+
+                expect(label.languages).to.exist;
+                expect(_.map(label.languages, 'lang'))
+                    .to.contain('eng', 'sw');
+
+                done(error, xformJson);
+            });
+        });
+
         it('should be able to parse question hint from translations', function(done) {
             xform2json(waterForm, function(error, xformJson) {
+
                 var hint = _.find(xformJson.questions, {
                     name: 'name'
                 }).hint;
@@ -119,7 +176,7 @@ describe('xform2json', function() {
                 expect(hint.id).to.be.equal('/data/name:hint');
 
                 expect(hint.defaultsTo).to.exists;
-                expect(hint.defaultsTo.value)
+                expect(hint.defaultsTo.value.long)
                     .to.be.equal('What is this point named?');
 
                 expect(hint.languages).to.exist;
@@ -226,7 +283,7 @@ describe('xform2json', function() {
                 });
 
                 expect(question).to.exist;
-                expect(question.label.defaultsTo.value).to.contain('{{name}}');
+                expect(question.label.defaultsTo.value.long).to.contain('{{name}}');
 
                 done(error, xformJson);
             });
@@ -357,6 +414,16 @@ describe('xform2json', function() {
 
         });
 
+    });
+
+
+    describe('parse sectioned form', function() {
+        it('dump', function(done) {
+            xform2json(farmerForm, function(error, xformJson) {
+                fs.writeFileSync('farmer.json', JSON.stringify(xformJson), 'utf-8');
+                done(error, xformJson);
+            });
+        });
     });
 
 

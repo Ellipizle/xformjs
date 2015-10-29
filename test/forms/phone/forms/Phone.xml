@@ -4,7 +4,7 @@
             <h:title>Phone</h:title>
             <model>
                 <instance>
-                    <phone id="Phone_2011-02-04_00-09-18">
+                    <phone id="Phone_2011-02-04_00-09-18" version="1.0.0">
                         <device_id/>
                         <start/>
                         <end/>

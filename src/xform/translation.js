@@ -8,7 +8,7 @@ var convertor = require(path.join(__dirname, '..', 'convertor'));
 
 
 /**
- * @module parser
+ * @module translation
  * @description parse and normalize xform translation text
  * @type {Object}
  * @version 0.1.0
@@ -21,19 +21,26 @@ var translation = {};
  * @description parse translation text form xformJson instance
  * @param  {Object} xformJson json represenation of xform xml
  * @return {Object}           translation object
+ * @public
  */
 translation.parseTranslations = function(xformJson) {
-    var translations = _.get(xformJson, 'html.head.model.itext');
+    var translations =
+        _.get(xformJson, 'html.head.model.itext') || undefined;
+
+    //obtain translations
     if (translations) {
         translations = translations.translation;
     }
+
+    //normalize translations to array
     if (translations && !_.isArray(translations)) {
         translations = [translations];
     }
 
-    //normalize node
+    //normalize each translation nodes
+    //
     translations = _.map(translations, function(translation) {
-        //normalize translation node
+        //normalize translation node and its attributes
         translation = common.normalizeNode(translation);
 
         //detect boolean like values
@@ -41,7 +48,7 @@ translation.parseTranslations = function(xformJson) {
 
         //normalize translation text
         translation.text = _.map(translation.text, function(text) {
-            //normalize translation text node
+            //normalize translation text node and its attributes
             text = common.normalizeNode(text);
 
             //normalize text value
@@ -59,6 +66,10 @@ translation.parseTranslations = function(xformJson) {
                 });
 
                 text.value = values;
+            } else {
+                text.value = {
+                    long: text.value
+                };
             }
 
             return text;
@@ -67,7 +78,7 @@ translation.parseTranslations = function(xformJson) {
         return translation;
     });
 
-    //normalize default language
+    //normalize and detect default language
     var defaultLanguage = _.find(translations, {
         default: true
     });
@@ -77,16 +88,21 @@ translation.parseTranslations = function(xformJson) {
         });
     }
 
+    //compact translations
+    translations = _.compact(translations);
+
     return translations;
 };
 
 
 /**
- * @description parse default language details from translations
- * @param  {Array<Object>} translations collection of form translations
+ * @description parse require language details from translations
+ * @param  {Array<Object>} form translations collection
  * @param  {String} lang language to lookup from translations
  * @return {Object}              language details if found else default language
  *                                        details
+ *
+ * @public
  */
 translation.parseLanguage = function(translations, lang) {
     //prepare language selection criteria
@@ -105,7 +121,14 @@ translation.parseLanguage = function(translations, lang) {
     return language;
 };
 
-//parser 
+
+/**
+ * @description parse default language of the specific node
+ * @param  {Array<Object>} form translations collection
+ * @param  {String} id           node identifier
+ * @return {Object}              default node language
+ * @public
+ */
 translation.parseNodeLanguage = function(translations, id) {
     //find default language
     var language = translation.parseLanguage(translations);
@@ -122,12 +145,21 @@ translation.parseNodeLanguage = function(translations, id) {
 };
 
 
+/**
+ * @description parse node languages
+ * @param  {Array<Object>} form translations collection
+ * @param  {String} id           node identifier
+ * @return {Array<Object>}       node languages
+ * @public
+ */
 translation.parseNodeLanguages = function(translations, id) {
     //languages accumulator
     var languages = [];
 
-    //find node language
+    //find node languages
+    //
     _.forEach(translations, function(translation) {
+
         //obtain language using node id
         var language = _.find(translation.text, {
             id: id
@@ -138,6 +170,7 @@ translation.parseNodeLanguages = function(translations, id) {
 
         //collect language
         languages.push(language);
+
     });
 
     //compact languages

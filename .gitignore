@@ -3,3 +3,7 @@
 node_modules/
 npm-debug.log
 sampling/
+farmer.json
+phone.json
+registration.json
+water.json

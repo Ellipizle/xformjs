@@ -19,7 +19,7 @@ var common = {};
  * @return {Object}      
  */
 common.normalizeNode = function(node) {
-
+    
     node = _.merge(node, node.$);
     node = _.omit(node, '$');
 
@@ -29,7 +29,7 @@ common.normalizeNode = function(node) {
 
 
 /**
- * @description normalize input typt name
+ * @description normalize input type name
  * @param  {String} type input type name
  * @return {String}
  */
@@ -44,8 +44,14 @@ common.normalizeType = function(type) {
         type = 'string';
     }
 
+    //normalize datetime/dateTime inputs type
+    if (_.startsWith(type, 'dateTime') || _.startsWith(type, 'datetime')) {
+        type = 'datetime';
+    }
+
     return type;
 };
+
 
 /**
  * @description convert given xform jr text to translation text id

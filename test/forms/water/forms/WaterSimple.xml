@@ -44,7 +44,7 @@
                         <value form="short">Jina</value>
                     </text>
                     <text id="/data/name:hint">
-                        <value>Jina sahihinla kituo cha maji?</value>
+                        <value>Jina sahihi la kituo cha maji?</value>
                     </text>
                     <text id="/data/users_per_month:label">
                         <value>Matumizi kwa mwezi</value>
@@ -60,7 +60,7 @@
                     </text>
                     <text id="/widgets/display_widgets/text_media:label">
                         <value form="audio">jr://audio/goldeneagle.mp3</value>
-                        <value>You can add a sound recording.</value>
+                        <value>Weka sauti</value>
                     </text>
                 </translation>
             </itext>
