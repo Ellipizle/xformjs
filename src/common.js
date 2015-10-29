@@ -19,7 +19,7 @@ var common = {};
  * @return {Object}      
  */
 common.normalizeNode = function(node) {
-    
+
     node = _.merge(node, node.$);
     node = _.omit(node, '$');
 
@@ -79,10 +79,11 @@ common.jrTextToTranslationId = function(jrText) {
 common.parseVariableName = function(nodeset) {
 
     //compute variable name of the given nodeset
-    return _.tail(_.filter(nodeset.split('/'), function(item) {
-        return !_.isEmpty(item);
-    })).join('.');
-
+    // return _.tail(_.filter(nodeset.split('/'), function(item) {
+    //     return !_.isEmpty(item);
+    // })).join('.');
+    var name = _.last(nodeset.split('/'));
+    return name;
 };
 
 

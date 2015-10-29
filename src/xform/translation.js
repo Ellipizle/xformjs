@@ -131,15 +131,16 @@ translation.parseLanguage = function(translations, lang) {
  */
 translation.parseNodeLanguage = function(translations, id) {
     //find default language
-    var language = translation.parseLanguage(translations);
+    var _translation = translation.parseLanguage(translations);
+
 
     //obtain jrText default language
-    language = _.find(language.text, {
+    var language = _.find(_translation.text, {
         id: id
     });
 
     //extend language definition
-    language = _.merge(language, _.pick(translation, 'lang'));
+    language = _.merge(language, _.pick(_translation, 'lang'));
 
     return language;
 };
@@ -158,15 +159,15 @@ translation.parseNodeLanguages = function(translations, id) {
 
     //find node languages
     //
-    _.forEach(translations, function(translation) {
+    _.forEach(translations, function(_translation) {
 
         //obtain language using node id
-        var language = _.find(translation.text, {
+        var language = _.find(_translation.text, {
             id: id
         });
 
         //extend language definition
-        language = _.merge(language, _.pick(translation, 'lang'));
+        language = _.merge(language, _.pick(_translation, 'lang'));
 
         //collect language
         languages.push(language);

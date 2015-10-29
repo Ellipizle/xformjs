@@ -115,10 +115,14 @@ xform.parseQuestions = function(xformJson) {
     var questions = [];
 
     //parse questions bindings
-    widgets.bindings = binding.parseBindings(xformJson);
+    widgets.bindings =
+        controls.bindings =
+        binding.parseBindings(xformJson);
 
     //parse translations
-    widgets.translations = translation.parseTranslations(xformJson);
+    widgets.translations =
+        controls.translations =
+        translation.parseTranslations(xformJson);
 
     //obtain xform body definition
     var body = xformJson.html.body;

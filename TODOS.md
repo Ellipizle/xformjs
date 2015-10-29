@@ -25,7 +25,7 @@
     + [x] for `required` set to `false`
     + [x] for `readonly` set to `false`
     + [x] for `saveIncomplete` set to `false`
-- [ ] Parse question relevant
+- [ ] Parse question relevant and normalize it
 - [x] Parse question readonly
 - [x] Parse question type, default to *string* if none present
 - [ ] parse question type, default to string
@@ -69,7 +69,8 @@
 
 ## Repeat
 - [ ] findout how repeat questions are submitted in instance
-- [ ] parse repeated questions
+- [ ] parse repeated questions and set default repeat count to 1
+- [ ] parse jr:noAddRemove and default to 'false()'
 
 
 ## Widgets

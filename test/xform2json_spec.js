@@ -20,6 +20,9 @@ var registrationForm =
 var farmerForm =
     fs.readFileSync(path.join(__dirname, 'forms', 'farmer', 'forms', 'Farmer.xml'), 'utf-8');
 
+var waterComplexForm =
+    fs.readFileSync(path.join(__dirname, 'forms', 'water', 'forms', 'Water_2011_03_17.xml'), 'utf-8');
+
 describe('xform2json', function() {
 
     it('should be a function', function(done) {
@@ -418,9 +421,16 @@ describe('xform2json', function() {
 
 
     describe('parse sectioned form', function() {
-        it('dump', function(done) {
+        it('dump farmer', function(done) {
             xform2json(farmerForm, function(error, xformJson) {
                 fs.writeFileSync('farmer.json', JSON.stringify(xformJson), 'utf-8');
+                done(error, xformJson);
+            });
+        });
+
+        it('dump water complex', function(done) {
+            xform2json(waterComplexForm, function(error, xformJson) {
+                fs.writeFileSync('waterComplex.json', JSON.stringify(xformJson), 'utf-8');
                 done(error, xformJson);
             });
         });

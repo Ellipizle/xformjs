@@ -4,7 +4,7 @@
 var _ = require('lodash');
 var path = require('path');
 var common = require(path.join(__dirname, '..', 'common'));
-// var widgets = require(path.join(__dirname, 'widgets'));
+var widgets = require(path.join(__dirname, 'widgets'));
 
 
 /**
@@ -40,7 +40,7 @@ controls.isControl = function(type) {
  */
 controls.isGroupControl = function(type) {
     //allowed group control
-    var _groupControls = ['group'];
+    var _groupControls = ['group', 'repeat'];
 
     //check if node is a group control
     var isGroupControl = _.contains(_groupControls, type);
@@ -57,12 +57,19 @@ controls.normalizeControl = function(control, controlType) {
         //normalize control
         node = common.normalizeNode(node);
 
+        //extend control with bindings
+        var ref = node.ref || node.nodeset;
+        node = _.merge(node, _.get(controls.bindings, ref));
+
         //set control type
         node.control = nodeType;
 
         //iterate through control keys
         _.forEach(node, function(childNode, childType) {
+            //TODO check for repeat
             var isControl = controls.isGroupControl(childType);
+
+            var isWidget = widgets.isWidget(childType);
 
             if (isControl) {
 
@@ -84,6 +91,11 @@ controls.normalizeControl = function(control, controlType) {
 
                     normalizeControlRecursive(node[childType], childNode, childType);
                 }
+            }
+
+            //parse widgets
+            if (isWidget) {
+                node[childType] = widgets.parse(childNode, childType);
             }
 
         });
