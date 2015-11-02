@@ -71,8 +71,9 @@ binding.parseBinding = function(node) {
     //normalize nodeset
     bind.nodeset = bind.nodeset || bind.ref;
 
+    //TODO parse relevant
+
     //normalize type 
-    //default to string if not found
     bind.type = common.normalizeType(bind.type);
 
 
@@ -84,8 +85,6 @@ binding.parseBinding = function(node) {
         bind.required =
             bind.required ? bind.required : 'false()';
 
-
-        //TODO parse relevant
 
         //parse constraints
         //TODO convert regex pattern to js compactible regex

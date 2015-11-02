@@ -1,5 +1,9 @@
 # Form Parsing
 
+## Must
+- [ ] Section form using group
+- [ ] Adding question numbers
+
 ## General
 - [ ] Parallelize algorithms whenever possible
 - [ ] Parallel parsing of bindings and questions
@@ -65,6 +69,7 @@
 
 ## Label
 - [ ] Allow references to be binded on the label using angular style
+    + [ ] Need reference fix 
 - [ ] parse default language label from text
 
 ## Repeat

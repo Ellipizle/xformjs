@@ -55,11 +55,7 @@ widgets.parseLabel = function(label) {
 
         //obtain label text from object label definition
         if (label._) {
-            label.defaultsTo = {
-                value: {
-                    long: label._
-                }
-            };
+            label.long = label._;
             label = _.omit(label, '_');
         }
 
@@ -70,8 +66,10 @@ widgets.parseLabel = function(label) {
                 common.jrTextToTranslationId(label.ref);
 
             //parse default language label definition
-            label.defaultsTo =
+            var language =
                 translation.parseNodeLanguage(widgets.translations, label.id);
+            label =
+                _.merge(label, language);
 
             //parse all label languages
             label.languages =
@@ -89,12 +87,12 @@ widgets.parseLabel = function(label) {
             var path = common.parseVariableName(ref);
 
             //bind instance path reference using angular style
-            label.defaultsTo.value.long =
-                label.defaultsTo.value.long.replace('\n', ' {{' + path + '}}');
+            label.long =
+                label.long.replace('\n', ' {{' + path + '}}');
 
             //remove unwanted tabs on the label
-            label.defaultsTo.value.long =
-                label.defaultsTo.value.long.replace(/\s+/g, ' ');
+            label.long =
+                label.long.replace(/\s+/g, ' ');
 
             //delete output from label
             label = _.omit(label, 'output');
@@ -104,11 +102,7 @@ widgets.parseLabel = function(label) {
     //label is just a string
     if (_.isString(label)) {
         var _label = {};
-        _label.defaultsTo = {
-            value: {
-                long: label
-            }
-        };
+        _label.long = label;
         label = _label;
     }
 
@@ -131,11 +125,7 @@ widgets.parseHint = function(hint) {
         hint = common.normalizeNode(hint);
 
         if (hint._) {
-            hint.defaultsTo = {
-                value: {
-                    long: hint._
-                }
-            };
+            hint.long = hint._;
             hint = _.omit(hint, '_');
         }
 
@@ -145,8 +135,9 @@ widgets.parseHint = function(hint) {
                 common.jrTextToTranslationId(hint.ref);
 
             //parse default language hint definition
-            hint.defaultsTo =
+            var language =
                 translation.parseNodeLanguage(widgets.translations, hint.id);
+            hint = _.merge(hint, language);
 
             //parse all hint translation languages
             hint.languages =
@@ -160,11 +151,7 @@ widgets.parseHint = function(hint) {
     //hint its just a string
     if (_.isString(hint)) {
         var _hint = {};
-        _hint.defaultsTo = {
-            value: {
-                long: hint
-            }
-        };
+        _hint.long = hint;
         hint = _hint;
     }
 

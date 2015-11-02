@@ -157,8 +157,8 @@ describe('xform2json', function() {
 
                 expect(label.id).to.be.equal('/data/name:label');
 
-                expect(label.defaultsTo).to.exists;
-                expect(label.defaultsTo.value.long)
+                expect(label.long).to.exists;
+                expect(label.long)
                     .to.be.equal('Water Point Name');
 
                 expect(label.languages).to.exist;
@@ -178,8 +178,8 @@ describe('xform2json', function() {
 
                 expect(hint.id).to.be.equal('/data/name:hint');
 
-                expect(hint.defaultsTo).to.exists;
-                expect(hint.defaultsTo.value.long)
+                expect(hint.long).to.exists;
+                expect(hint.long)
                     .to.be.equal('What is this point named?');
 
                 expect(hint.languages).to.exist;
@@ -302,7 +302,7 @@ describe('xform2json', function() {
                 });
 
                 expect(question).to.exist;
-                expect(question.label.defaultsTo.value.long).to.contain('{{name}}');
+                expect(question.label.long).to.contain('{{name}}');
 
                 done(error, xformJson);
             });

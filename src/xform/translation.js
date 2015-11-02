@@ -141,6 +141,8 @@ translation.parseNodeLanguage = function(translations, id) {
 
     //extend language definition
     language = _.merge(language, _.pick(_translation, 'lang'));
+    language = _.merge(language, language.value);
+    delete language.value;
 
     return language;
 };
@@ -168,6 +170,8 @@ translation.parseNodeLanguages = function(translations, id) {
 
         //extend language definition
         language = _.merge(language, _.pick(_translation, 'lang'));
+        language = _.merge(language, language.value);
+        delete language.value;
 
         //collect language
         languages.push(language);
