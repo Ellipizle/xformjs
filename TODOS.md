@@ -95,3 +95,7 @@
 ## To resolve
 - [ ] use simple structure on languages
 - [ ] use simple structure on label and hint
+
+## Thoughts
+- [ ] should set default missing value based on data type
+- [ ] pre code/set default codes to select1 and select items
