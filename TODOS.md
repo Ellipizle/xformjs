@@ -34,6 +34,7 @@
 - [x] Parse question type, default to *string* if none present
 - [ ] parse question type, default to string
 - [ ] parse preload and property as `meta` for the form
+- [ ] convert constraint expressions and regex to javascript compactible
 
 ## Translation
 - [x] parse default language
@@ -68,9 +69,9 @@
 - [ ] Parse geopoint data
 
 ## Label
-- [ ] Allow references to be binded on the label using angular style
+- [ ] Allow output references to be binded on the label using angular style
     + [ ] Need reference fix 
-- [ ] parse default language label from text
+- [x] parse default language label from text
 
 ## Repeat
 - [ ] findout how repeat questions are submitted in instance
@@ -110,10 +111,6 @@
 
 ## Meta Questions
 - [ ] should build questions from bindings contains preload and property
-
-## To resolve
-- [ ] use simple structure on languages
-- [ ] use simple structure on label and hint
 
 ## Thoughts
 - [ ] should set default missing value based on data type

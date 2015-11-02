@@ -97,5 +97,19 @@ common.parseReference = function(nodeset) {
 
 };
 
+/**
+ * @description process nodeset or ref to obtain its full instance path reference
+ * @param  {String} nodeset valid nodeset or ref
+ * @public
+ */
+common.parsePathReference = function(nodeset) {
+
+    //compute full instance reference of the given nodeset
+    return _.filter(nodeset.split('/'), function(item) {
+        return !_.isEmpty(item);
+    }).join('.');
+
+};
+
 //export common module
 module.exports = exports = common;

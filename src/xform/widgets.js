@@ -84,7 +84,7 @@ widgets.parseLabel = function(label) {
             label.output && label.output.$ ? label.output.$.ref : undefined;
 
         if (ref) {
-            var path = common.parseVariableName(ref);
+            var path = common.parsePathReference(ref);
 
             //bind instance path reference using angular style
             label.long =
@@ -105,6 +105,7 @@ widgets.parseLabel = function(label) {
         _label.long = label;
         label = _label;
     }
+
 
     return label;
 };
@@ -189,6 +190,9 @@ widgets.parseWidget = function(widget, widgetType) {
     var reference = common.parseReference(ref);
 
     widget.reference = reference;
+
+    //normalize instance reference
+    widget.ref = common.parsePathReference(ref);
 
     return widget;
 };

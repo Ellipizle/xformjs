@@ -280,7 +280,7 @@ describe('xform2json', function() {
             xform2json(phoneForm, function(error, xformJson) {
 
                 expect(xformJson.questions).to.exist;
-                expect(_.map(xformJson.questions, 'ref'))
+                expect(_.map(xformJson.questions, 'nodeset'))
                     .to.contain(
                         '/phone/visible_id',
                         '/phone/phone_number',
@@ -302,7 +302,7 @@ describe('xform2json', function() {
                 });
 
                 expect(question).to.exist;
-                expect(question.label.long).to.contain('{{name}}');
+                expect(question.label.long).to.contain('{{registration.name}}');
 
                 done(error, xformJson);
             });
