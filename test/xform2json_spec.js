@@ -254,6 +254,22 @@ describe('xform2json', function() {
             });
         });
 
+        it('should be able to parse question constraint', function(done) {
+            xform2json(phoneForm, function(error, xformJson) {
+
+                var question = _.find(xformJson.questions, {
+                    nodeset: '/phone/visible_id'
+                });
+
+                expect(question).to.exist;
+                expect(question.constraint).to.be.equal('regex(., \'^\\d{3}$\')');
+                expect(question.constraintMessage)
+                    .to.be.equal('Please enter the three digit string from the back of the phone.');
+
+                done(error, xformJson);
+            });
+        });
+
     });
 
 

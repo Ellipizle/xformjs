@@ -85,7 +85,14 @@ binding.parseBinding = function(node) {
 
     //TODO below attributes
     //TODO parse relevant
-    //TODO parse constraints
+
+    //parse constraints
+    //TODO convert regex pattern to js compactible regex
+    if (bind.constraintMsg) {
+        bind.constraintMessage = bind.constraintMsg;
+        delete bind.constraintMsg;
+    }
+
     //TODO parse calculate
 
     //normalize saveIncomplete
