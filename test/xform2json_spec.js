@@ -235,7 +235,7 @@ describe('xform2json', function() {
                 expect(xformJson.questions).to.exist;
                 expect(_.find(xformJson.questions, {
                     nodeset: '/phone/phone_number'
-                }).defaultsTo).to.be.equal('0000111111');
+                }).defaultValue).to.be.equal('0000111111');
 
                 done(error, xformJson);
             });
@@ -248,7 +248,7 @@ describe('xform2json', function() {
                 expect(xformJson.questions).to.exist;
                 expect(_.find(xformJson.questions, {
                     nodeset: '/phone/age'
-                }).defaultsTo).to.be.equal(18);
+                }).defaultValue).to.be.equal(18);
 
                 done(error, xformJson);
             });

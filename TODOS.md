@@ -71,6 +71,7 @@
 - [ ] findout how repeat questions are submitted in instance
 - [ ] parse repeated questions and set default repeat count to 1
 - [ ] parse jr:noAddRemove and default to 'false()'
+- [ ] prefix variable name with repeat variable 
 
 
 ## Widgets

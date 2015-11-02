@@ -39,7 +39,7 @@ binding.parseDefaultValue = function(xformJson, bind) {
         //set question default value
         //TODO use option missing value/default value
         if (defaultsTo && !_.isEmpty(defaultsTo)) {
-            bind.defaultsTo = defaultsTo;
+            bind.defaultValue = defaultsTo;
         }
     }
 
@@ -48,8 +48,8 @@ binding.parseDefaultValue = function(xformJson, bind) {
         (bind.type === 'integer' ||
             bind.type === 'decimal');
 
-    if (isNumber && bind.defaultsTo) {
-        bind.defaultsTo = Number(bind.defaultsTo);
+    if (isNumber && bind.defaultValue) {
+        bind.defaultValue = Number(bind.defaultValue);
     }
 
     return bind;

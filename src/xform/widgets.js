@@ -199,9 +199,7 @@ widgets.parseWidget = function(widget, widgetType) {
     }
 
     //compute instance answer json reference key
-    var reference = _.tail(_.filter(ref.split('/'), function(item) {
-        return !_.isEmpty(item);
-    })).join('.');
+    var reference = common.parseReference(ref);
 
     widget.reference = reference;
 
