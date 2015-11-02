@@ -83,7 +83,6 @@ binding.parseBinding = function(node) {
     bind.required =
         bind.required ? bind.required : 'false()';
 
-    //TODO below attributes
     //TODO parse relevant
 
     //parse constraints

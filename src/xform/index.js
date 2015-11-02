@@ -7,6 +7,7 @@ var translation = require(path.join(__dirname, 'translation'));
 var binding = require(path.join(__dirname, 'binding'));
 var widgets = require(path.join(__dirname, 'widgets'));
 var controls = require(path.join(__dirname, 'controls'));
+var meta = require(path.join(__dirname, 'meta'));
 
 
 /**
@@ -117,6 +118,7 @@ xform.parseQuestions = function(xformJson) {
     //parse questions bindings
     widgets.bindings =
         controls.bindings =
+        meta.bindings =
         binding.parseBindings(xformJson);
 
     //parse translations
@@ -149,6 +151,10 @@ xform.parseQuestions = function(xformJson) {
 
     return questions;
 
+};
+
+xform.parseMeta = function() {
+    return meta.parse();
 };
 
 

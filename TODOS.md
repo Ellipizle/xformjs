@@ -73,6 +73,18 @@
 - [ ] parse jr:noAddRemove and default to 'false()'
 - [ ] prefix variable name with repeat variable 
 
+## Revelevant
+- [ ] should parse relevant in the form
+
+```js
+{
+    reference:'',
+    value:'',
+    ...
+}
+```
+
+- [ ] should parse relevant form XPath functions
 
 ## Widgets
 - [ ] parse input widget
@@ -91,6 +103,8 @@
 - [ ] parse itemset control
 - [ ] parse value control
 
+## Meta Questions
+- [ ] should build questions from bindings contains preload and property
 
 ## To resolve
 - [ ] use simple structure on languages

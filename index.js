@@ -73,6 +73,9 @@ xformjs.xform2json = function(xForm, done) {
             },
             questions: function(next) {
                 next(null, xform.parseQuestions(xformJson));
+            },
+            meta: function(next) {
+                next(null, xform.parseMeta());
             }
         }, done);
 
