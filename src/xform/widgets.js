@@ -14,6 +14,9 @@ var translation = require(path.join(__dirname, 'translation'));
  */
 var widgets = {};
 
+//collection of known widgets
+widgets.widgets = ['input', 'select1', 'select', 'upload', 'trigger'];
+
 //reference to form translations
 widgets.translations;
 
@@ -28,11 +31,8 @@ widgets.bindings;
  * @public
  */
 widgets.isWidget = function(type) {
-    //allowed widget
-    var _widgets = ['input', 'select1', 'select', 'upload', 'trigger'];
-
     //check if input is widget
-    var isWidget = _.contains(_widgets, type);
+    var isWidget = _.contains(widgets.widgets, type);
 
     return isWidget;
 };

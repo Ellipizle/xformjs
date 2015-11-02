@@ -113,19 +113,60 @@ controls.normalizeControl = function(control, controlType) {
 
 };
 
-controls.parseControl = function(control, controlType) {
-    var _controls = [];
 
-    //normalize control
-    control = common.normalizeNode(control);
+controls.flattenControl = function(control) {
+    //widgets accumulator
+    var accumulatedWidgets = [];
 
-    //set control type
-    control.control = controlType;
 
-    //collect _controls
-    _controls.push(control);
+    function flattenControlRecursive(_section, _control) {
 
-    return _controls;
+        //pick widgets from a control
+        var _widgets = _.values(_.pick(_control, widgets.widgets));
+
+        //flatten widgets
+        _widgets = _.flattenDeep(_widgets);
+
+        //removed picked widgets
+        _control = _.omit(_control, widgets.widgets);
+
+        //check if remain control attributes has `group`
+        var groups = _.values(_.pick(_control, ['group']));
+
+        //prepare section
+        var section = _.omit(_control, 'group');
+        //nest section
+        if (_section) {
+            _section.section = section;
+            section = _section;
+        }
+
+        //continue flatten if there are inner groups
+        groups = _.flattenDeep(groups);
+        if (groups && !_.isEmpty(groups)) {
+            _.forEach(groups, function(group) {
+                flattenControlRecursive(section, group);
+            });
+        }
+
+        //collect widgets
+        else {
+            _.forEach(_widgets, function(_widget) {
+                //assign section to widget
+                _widget.section = section;
+                accumulatedWidgets.push(_widget);
+            });
+        }
+
+    }
+
+    flattenControlRecursive(undefined, control);
+
+    //compact widgets
+    accumulatedWidgets = _.compact(accumulatedWidgets);
+
+    return accumulatedWidgets;
+
 };
 
 
@@ -145,7 +186,19 @@ controls.parse = function(control, controlType) {
     //compact controls
     _controls = _.compact(_controls);
 
-    return _controls;
+    // return _controls;
+
+    //parse and collect widgets from controls
+    var _widgets = _.map(_controls, function(_control) {
+        return controls.flattenControl(_control);
+    });
+    //flatten deep array of widgets
+    _widgets = _.flattenDeep(_widgets);
+
+    //compact widgets
+    _widgets = _.compact(_widgets);
+
+    return _widgets;
 
 };
 

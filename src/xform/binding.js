@@ -33,7 +33,7 @@ binding.parseDefaultValue = function(xformJson, bind) {
 
     //try to obtain default value
     //for non readonly inputs i.e label, hint, output and note
-    if (!bind.readonly) {
+    if (!bind.readonly && bind.type) {
         var defaultsTo = _.get(xformJson.html.head.model.instance, reference);
 
         //set question default value
@@ -73,35 +73,39 @@ binding.parseBinding = function(node) {
 
     //normalize type 
     //default to string if not found
-    bind.type = bind.type || 'string';
     bind.type = common.normalizeType(bind.type);
 
-    //normalize readonly
-    bind.readonly = bind.readonly || 'false()';
 
-    //parse binding required to js types
-    bind.required =
-        bind.required ? bind.required : 'false()';
+    if (bind.type) {
+        //normalize readonly
+        bind.readonly = bind.readonly || 'false()';
 
-    //TODO parse relevant
+        //parse binding required to js types
+        bind.required =
+            bind.required ? bind.required : 'false()';
 
-    //parse constraints
-    //TODO convert regex pattern to js compactible regex
-    if (bind.constraintMsg) {
-        bind.constraintMessage = bind.constraintMsg;
-        delete bind.constraintMsg;
+
+        //TODO parse relevant
+
+        //parse constraints
+        //TODO convert regex pattern to js compactible regex
+        if (bind.constraintMsg) {
+            bind.constraintMessage = bind.constraintMsg;
+            delete bind.constraintMsg;
+        }
+
+        //TODO parse calculate
+
+        //normalize saveIncomplete
+        bind.saveIncomplete = bind.saveIncomplete || 'false()';
+
+        //convert boolean strings to actual js boolean
+        bind = convertor.parseBooleans(bind);
+
+        //compute question variable name from it bindings
+        bind.name = common.parseVariableName(bind.nodeset);
+
     }
-
-    //TODO parse calculate
-
-    //normalize saveIncomplete
-    bind.saveIncomplete = bind.saveIncomplete || 'false()';
-
-    //convert boolean strings to actual js boolean
-    bind = convertor.parseBooleans(bind);
-
-    //compute question variable name from it bindings
-    bind.name = common.parseVariableName(bind.nodeset);
 
     return bind;
 
