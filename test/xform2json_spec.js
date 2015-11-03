@@ -152,7 +152,7 @@ describe('xform2json', function() {
             xform2json(waterForm, function(error, xformJson) {
 
                 var label = _.find(xformJson.questions, {
-                    name: 'name'
+                    variable: 'name'
                 }).label;
 
                 expect(label.id).to.be.equal('/data/name:label');
@@ -173,7 +173,7 @@ describe('xform2json', function() {
             xform2json(waterForm, function(error, xformJson) {
 
                 var hint = _.find(xformJson.questions, {
-                    name: 'name'
+                    variable: 'name'
                 }).hint;
 
                 expect(hint.id).to.be.equal('/data/name:hint');
@@ -216,7 +216,7 @@ describe('xform2json', function() {
             xform2json(phoneForm, function(error, xformJson) {
 
                 expect(xformJson.questions).to.exist;
-                expect(_.map(xformJson.questions, 'name'))
+                expect(_.map(xformJson.questions, 'variable'))
                     .to.contain(
                         'visible_id',
                         'phone_number',
@@ -298,7 +298,7 @@ describe('xform2json', function() {
             xform2json(registrationForm, function(error, xformJson) {
 
                 var question = _.find(xformJson.questions, {
-                    name: 'sex'
+                    variable: 'sex'
                 });
 
                 expect(question).to.exist;
@@ -316,7 +316,7 @@ describe('xform2json', function() {
                 xform2json(phoneForm, function(error, xformJson) {
 
                     var question = _.find(xformJson.questions, {
-                        name: 'phone_number'
+                        variable: 'phone_number'
                     });
 
                     expect(question).to.exist;
@@ -332,7 +332,7 @@ describe('xform2json', function() {
                 xform2json(phoneForm, function(error, xformJson) {
 
                     var question = _.find(xformJson.questions, {
-                        name: 'age'
+                        variable: 'age'
                     });
 
                     expect(question).to.exist;
@@ -347,7 +347,7 @@ describe('xform2json', function() {
                 xform2json(registrationForm, function(error, xformJson) {
 
                     var question = _.find(xformJson.questions, {
-                        name: 'birth_date'
+                        variable: 'birth_date'
                     });
 
                     expect(question).to.exist;
@@ -367,7 +367,7 @@ describe('xform2json', function() {
                 xform2json(phoneForm, function(error, xformJson) {
 
                     var question = _.find(xformJson.questions, {
-                        name: 'status'
+                        variable: 'status'
                     });
 
                     expect(question).to.exist;
@@ -393,7 +393,7 @@ describe('xform2json', function() {
                 xform2json(registrationForm, function(error, xformJson) {
 
                     var question = _.find(xformJson.questions, {
-                        name: 'languages'
+                        variable: 'languages'
                     });
 
                     expect(question).to.exist;
@@ -419,7 +419,7 @@ describe('xform2json', function() {
                 xform2json(registrationForm, function(error, xformJson) {
 
                     var question = _.find(xformJson.questions, {
-                        name: 'picture'
+                        variable: 'picture'
                     });
 
                     expect(question).to.exist;

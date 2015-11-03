@@ -187,12 +187,10 @@ widgets.parseWidget = function(widget, widgetType) {
     }
 
     //compute instance answer json reference key
-    var reference = common.parseReference(ref);
+    widget.accessor = common.parseReference(ref);
 
-    widget.reference = reference;
-
-    //normalize instance reference
-    widget.ref = common.parsePathReference(ref);
+    //add widget model
+    widget.model = common.parsePathReference(ref);
 
     return widget;
 };

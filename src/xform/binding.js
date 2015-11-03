@@ -102,7 +102,7 @@ binding.parseBinding = function(node) {
         bind = convertor.parseBooleans(bind);
 
         //compute question variable name from it bindings
-        bind.name = common.parseVariableName(bind.nodeset);
+        bind.variable = common.parseVariableName(bind.nodeset);
 
     }
 

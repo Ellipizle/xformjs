@@ -3,6 +3,7 @@
 ## Must
 - [ ] Section form using group
 - [ ] Adding question numbers
+- [ ] Fix question ordering after parsing
 
 ## General
 - [ ] Parallelize algorithms whenever possible
@@ -109,9 +110,12 @@
 - [ ] parse itemset control
 - [ ] parse value control
 
-## Meta Questions
+## Meta Questions !!!!! Priority
 - [ ] should build questions from bindings contains preload and property
 
 ## Thoughts
 - [ ] should set default missing value based on data type
 - [ ] pre code/set default codes to select1 and select items
+
+## Urgent
+- [ ] remove translations from form definition

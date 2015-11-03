@@ -84,7 +84,7 @@ common.parseVariableName = function(nodeset) {
 };
 
 /**
- * @description process nodeset or ref to obtain its instance variable reference
+ * @description process nodeset or ref to obtain its instance accessor
  * @param  {String} nodeset valid nodeset or ref
  * @public
  */
