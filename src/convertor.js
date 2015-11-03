@@ -49,5 +49,26 @@ convertor.parseBooleans = function(node) {
 };
 
 
+convertor.parseRegexConstraint = function(constraint) {
+    if (_.startsWith(constraint, 'regex')) {
+        //remove regex(., at the begin
+        var regex = constraint.replace('regex(.,', '');
+
+        //remove bracket at the end
+        regex = regex.substring(0, regex.length - 1);
+
+        //trim
+        regex = regex.trim();
+
+        constraint = {
+            type: 'regex',
+            pattern: regex
+        };
+    }
+
+    return constraint;
+};
+
+
 //export convertor
 module.exports = exports = convertor;

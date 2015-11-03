@@ -86,8 +86,12 @@ binding.parseBinding = function(node) {
             bind.required ? bind.required : 'false()';
 
 
-        //parse constraints
-        //TODO convert regex pattern to js compactible regex
+        //TODO parse constraints
+        
+        //convert regex pattern to js compactible regex
+        bind.constraint =
+            convertor.parseRegexConstraint(bind.constraint);
+
         if (bind.constraintMsg) {
             bind.constraintMessage = bind.constraintMsg;
             delete bind.constraintMsg;
